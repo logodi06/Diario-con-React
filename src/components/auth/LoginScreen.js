@@ -1,8 +1,9 @@
 import React from 'react';
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { startGoogleLogin, startLoginEmailPassword } from '../../actions/auth';
 import { useForm } from '../../hooks/useForm';
+import validator  from 'validator';
 
 export const LoginScreen = () => {
   
@@ -10,9 +11,13 @@ export const LoginScreen = () => {
   //el useDispatch lo que hace es darle acceso al dispatch, el cual sirve para hacer dispatch de acciones
   const dispatch = useDispatch();
   
+  //el use selector sive para extrar los valores del state de uiReducer
+  const { loading } = useSelector( state => state.ui );
+
+
   //en los input hay que colocar le onChange y los value con los valores obtenidos del useForm
   const [formValues, handleInputChange, reset]= useForm({
-    email: 'lor@gmail.com',
+    email: 'lore@gmail.com',
     password: '123456'
   });
 
@@ -31,6 +36,8 @@ export const LoginScreen = () => {
     dispatch(startGoogleLogin())
   }
 
+  
+
   return (
     <>
       <h3 className='auth__title'>Login</h3>
@@ -38,7 +45,7 @@ export const LoginScreen = () => {
         <input onChange={handleInputChange} value={email} type="text" placeholder="Email" name="email" className="auth__input" autoComplete="off"/>
         <input onChange={handleInputChange} value={password} type="password" placeholder="Password" name='password' className='auth__input'/>
 
-        <button className='btn btn-primary btn-block' type="submit"  >Login</button>
+        <button className='btn btn-primary btn-block' type="submit" disabled={loading} >Login</button>
 
           <div className='auth__social-networks'>
               <p>Login with social networks</p>
