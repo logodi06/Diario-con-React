@@ -42,7 +42,8 @@
 .journal__entries{
     flex: 1 1 auto;
     margin-top: 30px;
-    overflow-y: scroll;
+    overflow: auto;
+    //overflow-y: scroll;
 }
 
 .journal__entry{
@@ -50,6 +51,7 @@
     border-radius: 4px;
     color: $dark-grey;
     display: flex;
+    justify-content: space-between;
     margin-bottom: 10px;
     overflow: hidden;
 

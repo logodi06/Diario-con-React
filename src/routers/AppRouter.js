@@ -14,6 +14,8 @@ import { firebase } from '../firebase/firebaseConfig';
 import { login } from "../actions/auth";
 import { PrivateRoute } from "./PrivateRoute";
 import { PublicRoute } from "./PublicRoute";
+import { startLoadingNotes } from "../actions/notes";
+
 
 export const AppRouter = () => {
 
@@ -34,15 +36,17 @@ export const AppRouter = () => {
   useEffect(() => {
     //esto crea un observable que es un tipo especial que se puede disparar más de una vez,
     //es decir cuando la autenticación cambia se dispara, cuando se autentica se dispara, cuando hace logout se dispara
-     firebase.auth().onAuthStateChanged((user) => {
+     firebase.auth().onAuthStateChanged(async (user) => {
 
       //el signo de ? evalua si el objeto user tiene algo, entonces pregunta si existe el uid 
       //si no existe, el user es null y automáticamente se va a salir.
         if(user?.uid) {
           dispatch(login(user.uid, user.displayName)); 
-
           //si esta a esta condición se pone que esta logueado de forma correcta con el setIsLoggedIn
           setIsLoggedIn(true);
+
+          //dispatch que dispara la acción de cargar las notas que estan en la BD a la store, para tenerlo en notas
+          dispatch(startLoadingNotes(user.uid));
         }else {
           //en caso de que no este autenticado
           setIsLoggedIn(false)
@@ -58,7 +62,7 @@ export const AppRouter = () => {
       return (
         //se puede colocar una pantalla que diga loginScreen mientras se esta autenticando, se puede poner
         //cualquier componente, un circulo que este girando y simule que esta cargando etc..
-      <h1>Espere...</h1>
+      <h1>Wait...</h1>
       )
   }
   return (

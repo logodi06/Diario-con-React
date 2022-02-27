@@ -4,6 +4,7 @@ import Swal from 'sweetalert2'
 import { types } from "../tytpes/types";
 import { firebase, googleAuthProvider } from "../firebase/firebaseConfig";
 import { finishLoading, startLoading } from "./ui";
+import { noteLogout } from './notes';
 
 //Iniciar sesión con Email y Password
 //hacer una función que es asincrona  asincrona 
@@ -120,6 +121,9 @@ export const startLogout = () => {
         
         //una vez que se ejecuta se lanza el dispatch
         dispatch( logout() );
+        //acción que al cerrar sesión coloque las notas en [] vacias en la store porque no debe tener guardadas niguna
+        //asi mismo también se debe poner el active en null
+        dispatch(noteLogout());
     } 
 }
 
